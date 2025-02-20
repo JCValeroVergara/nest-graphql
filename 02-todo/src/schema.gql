@@ -1,0 +1,12 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  """Saluda al mundo"""
+  hello: String!
+  randomNumber: Float!
+
+  """Genera un número aleatorio entre 0 y el número pasado como argumento"""
+  randomFromZeroTo(to: Int!): Int!
+}
