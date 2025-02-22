@@ -9,12 +9,10 @@ export class SignupInput {
     email: string;
 
     @Field(() => String)
-    @Field()
     @IsNotEmpty()
     fullName: string;
 
     @Field(() => String)
-    @Field()
     @MinLength(6)
     password: string;
 }
