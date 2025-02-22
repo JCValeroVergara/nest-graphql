@@ -1,12 +1,13 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+
 import { User } from './entities';
 import { SignupInput } from 'src/auth/dtos';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateUserInput } from './dto';
+import { ValidRoles } from 'src/auth/enums';
 
 @Injectable()
 export class UsersService {
@@ -32,8 +33,15 @@ export class UsersService {
         }
     }
 
-    async findAll(): Promise<User[]> {
-        return [];
+    async findAll(roles: ValidRoles[]): Promise<User[]> {
+        
+        if (roles.length === 0) return await this.usersRepository.find();
+        
+        //* This is a more efficient way to query the database
+        return await this.usersRepository.createQueryBuilder()
+            .andWhere('ARRAY[roles] && ARRAY[:...roles]')
+            .setParameter('roles', roles)
+            .getMany();
     }
 
     async findOneById(id: string):Promise<User> {
