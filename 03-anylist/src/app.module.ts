@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ItemsModule } from './items/items.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { SeedModule } from './seed/seed.module';
 
 
 
@@ -63,6 +64,7 @@ import { AuthModule } from './auth/auth.module';
         ItemsModule,
         UsersModule,
         AuthModule,
+        SeedModule,
     ],
     controllers: [],
     providers: [],
