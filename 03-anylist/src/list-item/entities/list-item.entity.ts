@@ -6,7 +6,7 @@ import { Item } from 'src/items/entities';
 import { List } from 'src/lists/entities';
 
 @Entity('list_item')
-// @Unique('listItem-item', ['list', 'item'])
+@Unique('listItem-item', ['list', 'item'])
 @ObjectType()
 export class ListItem {
     
@@ -27,7 +27,7 @@ export class ListItem {
     //* Relations
 
     @ManyToOne(() => List, list => list.listItem, { lazy: true })
-    // @Field(() => List)
+    @Field(() => List)
     list: List;
 
     @ManyToOne(() => Item, item => item.listItem, { lazy: true })

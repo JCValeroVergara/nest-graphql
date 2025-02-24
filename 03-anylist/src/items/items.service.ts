@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateItemInput, UpdateItemInput } from './dto';
 import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { CreateItemInput, UpdateItemInput } from './dto';
+import { PaginationArgs, SearchArgs } from 'src/common/dto';
 import { Item } from './entities';
 import { User } from 'src/users/entities';
-import { PaginationArgs, SearchArgs } from 'src/common/dto';
 
 @Injectable()
 export class ItemsService {
@@ -36,8 +36,6 @@ export class ItemsService {
         
         return queryBuilder.getMany();
         // return this.itemsRepository.find({ where: { user: { id: user.id }, name: Like(`%${search}%`) }, skip: offset, take: limit });
-
-        
     }
 
     async findOne(id: string, user: User): Promise<Item> {
