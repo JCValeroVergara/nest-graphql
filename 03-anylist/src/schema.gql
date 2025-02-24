@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type List {
-  id: ID!
-  name: String!
-  user: User!
-}
-
 type User {
   id: ID!
   fullName: String!
@@ -21,11 +15,26 @@ type User {
   lists(offset: Int = 0, limit: Int = 10, search: String): [List!]!
 }
 
+type List {
+  id: ID!
+  name: String!
+  user: User!
+  items: [ListItem!]!
+}
+
+type ListItem {
+  id: ID!
+  quantity: Float!
+  completed: Boolean!
+  item: Item!
+}
+
 type Item {
   id: ID!
   name: String!
   quantityUnits: String
   user: User!
+  listItem: [ListItem!]!
 }
 
 type AuthResponse {
@@ -40,6 +49,7 @@ type Query {
   user(id: ID!): User!
   lists(offset: Int = 0, limit: Int = 10, search: String): [List!]!
   list(id: ID!): List!
+  listItem: [ListItem!]!
   revalite: AuthResponse!
 }
 
@@ -59,6 +69,7 @@ type Mutation {
   createList(createListInput: CreateListInput!): List!
   updateList(updateListInput: UpdateListInput!): List!
   removeList(id: ID!): List!
+  createListItem(createListItemInput: CreateListItemInput!): ListItem!
   signup(singupInput: SignupInput!): AuthResponse!
   login(loginInput: LoginInput!): AuthResponse!
 
@@ -93,6 +104,13 @@ input CreateListInput {
 input UpdateListInput {
   name: String
   id: ID!
+}
+
+input CreateListItemInput {
+  quantity: Float = 0
+  completed: Boolean = false
+  listId: ID!
+  itemId: ID!
 }
 
 input SignupInput {

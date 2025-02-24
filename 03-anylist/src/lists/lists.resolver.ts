@@ -1,9 +1,11 @@
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ID, ResolveField, Parent } from '@nestjs/graphql';
 
 import { ListsService } from './lists.service';
+import { ListItemService } from 'src/list-item/list-item.service';
 import { List } from './entities/list.entity';
 import { User } from 'src/users/entities';
+import { ListItem } from 'src/list-item/entities';
 
 
 import { PaginationArgs, SearchArgs } from 'src/common/dto';
@@ -14,7 +16,10 @@ import { CurrentUser } from 'src/auth/decorators';
 @Resolver(() => List)
 @UseGuards( JwtAuthGuard)
 export class ListsResolver {
-    constructor(private readonly listsService: ListsService) {}
+    constructor(
+        private readonly listsService: ListsService,
+        private readonly listItemService: ListItemService,
+    ) { }
 
     @Mutation(() => List)
     async createList(
@@ -56,4 +61,11 @@ export class ListsResolver {
     ): Promise<List> {
         return this.listsService.remove(id, user);
     }
-}
+
+    @ResolveField(() =>[ListItem], { name: 'items' })
+    async getListItems(
+        @Parent() list: List
+    ): Promise<ListItem[]> {
+        return this.listItemService.findAll();
+    }
+}   
